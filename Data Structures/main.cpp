@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <iterator>
 #include <crtdbg.h>
 #include "Structures/Linked List.h"
 
@@ -14,15 +15,24 @@ int main() {
 	//List<string> l2;
 	//cout << l.is_empty();	
 
+	List<int> l;
 
-	string s = "abc";
 
-	list<string> v;
-	v.push_back(s);
+	l.insert_after(40, l.get_head());
+	l.insert_after(30, l.get_head());
+	l.insert_after(20, l.get_head());
+	l.insert_after(10, l.get_head());
+	l.test();
+	cout << endl;
+	l.remove_after(l.get_head());
+	l.test();
+	
+	/*
+	vector<int> v{ 1,2,3,4,5 };
+	vector<int>::iterator b = v.begin();
+	advance(b, 2);
+	*/
 
-	s.~basic_string();
-
-	cout << *v.begin();
 
 
 	/*
