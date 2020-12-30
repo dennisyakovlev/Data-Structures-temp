@@ -11,58 +11,48 @@ using namespace std;
 
 int main() {
 
-	//List<int> l;
-	//List<string> l2;
-	//cout << l.is_empty();	
 
+
+	/*
 	List<int> l;
-
 
 	l.insert_after(40, l.get_head());
 	l.insert_after(30, l.get_head());
 	l.insert_after(20, l.get_head());
 	l.insert_after(10, l.get_head());
-	l.test();
-	cout << endl;
-	l.remove_after(l.get_head());
-	l.test();
-	
-	/*
-	vector<int> v{ 1,2,3,4,5 };
-	vector<int>::iterator b = v.begin();
-	advance(b, 2);
+	//l.test();
+	//cout << endl;
+	//l.remove_after(l.get_head());
+	//l.test();
+
+	List<int>::Node_Ptr b = l.begin();
+
+
+	cout << (++*b).get_data();
 	*/
 
 
+	List<int> l;
+
+	l.insert_after(40, l.get_head());
+	l.insert_after(30, l.get_head());
+	l.insert_after(20, l.get_head());
+	l.insert_after(10, l.get_head());
+
+	cout << (++(l.begin()));
 
 	/*
-	int a = 5;
-	int b = 10;
+	list<int> l2;
+	l2.erase(l2.begin());
+	l2.push_back(10);
+	l2.push_back(20);
+	l2.push_back(30);
+	l2.push_back(40);
 
-	allocator<Test<int>> alloc;
-
-	Test<int>* node_1 = alloc.allocate(1);;
-	Test<int>* node_2 =	alloc.allocate(1);;
-
-	node_1->get_data() = &a;
-	node_1->get_element() = node_2;
-
-	node_2->get_data() = &b;
-	node_2->get_element() = nullptr;
-
-	cout << *((node_1->get_element())->get_data());
-
-	alloc.destroy(node_1);
-	alloc.destroy(node_2);
-
-	alloc.deallocate(node_1, 1);
-	alloc.deallocate(node_2, 1);
+	cout << *( ++(l2.begin()) );
 	*/
-
-
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-	//cout << "print" << endl;
 
 }

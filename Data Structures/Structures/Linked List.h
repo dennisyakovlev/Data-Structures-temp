@@ -1,6 +1,5 @@
 #pragma once
 #include "Nodes.h"
-#include <iostream>
 #include <memory>
 
 //Forward Iterator
@@ -9,9 +8,9 @@ class List {
 
 public:
 
-	using Val = typename Type;
-	using Node_Val = typename Node<Type>;
-	using Node_Ptr = typename Node<Type>*;
+	using Val = Type;
+	using Node_Val = Node<Val>;
+	using Node_Ptr = Node_Val*;
 
 	List() {
 
@@ -84,7 +83,6 @@ public:
 		element->get_element() = new_next;
 
 	}
-
 
 	void test() {
 
