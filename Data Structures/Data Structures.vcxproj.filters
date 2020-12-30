@@ -23,5 +23,8 @@
     <ClInclude Include="Structures\Linked List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Structures\Nodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
