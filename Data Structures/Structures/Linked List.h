@@ -2,23 +2,22 @@
 #include "Nodes.h"
 #include <memory>
 
-//Forward Iterator
 template<typename Type>
 class List {
 
 public:
 
 	using Val = Type;
-	using Node_Val = Node<Val>;
-	using Node_Ptr = Node_Val*;
+	using Iter = Iterator<Val>;
 
 	List() {
 
-		head = alloc.allocate(1);
 		tail = alloc.allocate(1);
+		alloc.construct(tail);
 		
-		head->get_element() = tail;
-	
+		head = alloc.allocate(1);
+		alloc.construct(head, tail);
+
 	}
 	template<typename Iter>
 	List(Iter begin, Iter end) {
@@ -47,40 +46,42 @@ public:
 
 	}
 
-	Node_Ptr& begin() {
+	Iter begin() {
 
-		return head->get_element();
-
-	}
-	Node_Ptr& end() {
-
-		return tail;
+		return Iter(head->get_element());
 
 	}
-	Node_Ptr& get_head() {
+	Iter end() {
 
-		return head;
+		return Iter(tail);
 
 	}
-	bool is_empty()	{ 
-		
+	Iter get_head() {
+
+		return Iter(head);
+
+	}
+
+	bool is_empty() {
+
 		return head->get_element() == tail;
 
 	}
-	void insert_after(Val value, Node_Ptr element) {
+	void insert_after(Val value, Iter element) {
 
 		Node_Ptr new_node = alloc.allocate(1);
+		alloc.construct(new_node, value, element.get_raw()->get_element());
 
-		new_node->get_data() = value;
-		new_node->get_element() = element->get_element();
-		element->get_element() = new_node;
-
+		element.get_raw()->get_element() = new_node;
+		
 	}
-	void remove_after(Node_Ptr element) {
+	void remove_after(Iter element) {
 
-		Node_Ptr new_next = (element->get_element())->get_element();
-		destroy_elem(element->get_element());
-		element->get_element() = new_next;
+		Node_Ptr new_next = (element.get_raw()->get_element())->get_element();
+		
+		destroy_elem(element.get_raw()->get_element());
+		
+		element.get_raw()->get_element() = new_next;
 
 	}
 
@@ -98,6 +99,9 @@ public:
 	}
 
 private:
+	
+	using Node_Val = Singly_Node<Val>;
+	using Node_Ptr = Node_Val*;
 
 	void destroy_elem(Node_Ptr element) {
 

@@ -1,38 +1,19 @@
 #pragma once
 #include <type_traits>
-#include <iostream>
-
-template<typename Elem>
-class Test {
-
-public:
-
-	using Data_Val = typename Elem::Val;
-	using Elem_Ptr = Elem*;
-
-	Test(Elem& elem) : node(elem) {}
-
-	Data_Val& operator*() {
-	}
-
-
-private:
-
-	Elem_Ptr node;
-
-};
 
 template<typename Type, typename Node_Type = void>
-struct Node {
+struct Singly_Node {
 	
 	using Val = Type;
-	using Node_Ptr = typename std::conditional<std::is_void<Node_Type>::value, Node<Type>*, Node_Type*>::type;
+	using Node_Ptr = typename std::conditional
+		<std::is_void<Node_Type>::value,
+		Singly_Node<Type>*, Node_Type*>::type;
 
 public:
 
-	Node() : element(nullptr) {}
-	Node(Node_Ptr node) : element(node) {}
-	Node(Val value, Node_Ptr node) : data(value), element(node) {}
+	Singly_Node() : data(), element(nullptr) {}
+	Singly_Node(Node_Ptr node) : element(node) {}
+	Singly_Node(Val value, Node_Ptr node) : data(value), element(node) {}
 
 	Val& get_data() { return data; }
 	Node_Ptr& get_element() { return element; }
@@ -50,8 +31,12 @@ struct Doubly_Node {
 public:
 
 	using Val = Type;
-	using Prev_Ptr = typename std::conditional<std::is_void<Node_Prev>::value, Doubly_Node<Type>*, Node_Prev*>::type;
-	using Next_Ptr = typename std::conditional<std::is_void<Node_Next>::value, Doubly_Node<Type>*, Node_Next*>::type;
+	using Prev_Ptr = typename std::conditional
+		<std::is_void<Node_Prev>::value, 
+		Doubly_Node<Type>*, Node_Prev*>::type;
+	using Next_Ptr = typename std::conditional
+		<std::is_void<Node_Next>::value, 
+		Doubly_Node<Type>*, Node_Next*>::type;
 
 	Doubly_Node() : next_elem(nullptr), prev_elem(nullptr) {}
 	Doubly_Node(const Val& value, Prev_Ptr prev_ptr, Next_Ptr next_ptr) : data(value), next_elem(prev_ptr), prev_elem(next_ptr) {}
@@ -77,5 +62,47 @@ private:
 	Val data;
 	Prev_Ptr prev_elem;
 	Next_Ptr next_elem;
+
+};
+
+//Need to make compatible with all nodes
+//Need to make compatable with std (advance etc.)
+template <typename Type>
+struct Iterator {
+
+public:
+
+	using Val = typename Singly_Node<Type>::Val;
+	using Ptr = typename Singly_Node<Type>::Node_Ptr;
+
+	Iterator(Ptr ptr) : PTR(ptr) {}
+
+	Ptr get_raw() {
+
+		return PTR;
+
+	}
+
+	Iterator operator ++() {
+
+		PTR = PTR->get_element();
+		return *this;
+
+	}
+	Val& operator *() {
+
+		return PTR->get_data();
+
+	}
+	bool operator !=(Iterator rhs) {
+		return !(*this == rhs);
+	}
+	bool operator ==(Iterator rhs) {
+		return PTR == rhs.PTR;
+	}
+
+private:
+
+	Ptr PTR;
 
 };
